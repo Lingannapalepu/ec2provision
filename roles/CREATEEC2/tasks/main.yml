@@ -1,12 +1,17 @@
 ---
 # Basic provisioning example
-- ec2:
-    region: us-west-1     
-    key_name: dev
+- name: "Read env variables"
+  include_vars: 
+    file: "vars/{{ PROJECT }}_{{ ENV }}.yml"
+
+- name: "Spin New ec2 instance"
+  ec2:
+    region: "{{ REGION }}" 
+    key_name: "{{ KEYNAME }}"
     instance_type: t2.micro
-    image: ami-04b6c97b14c54de18
+    image: "{{ IMAGE }}"
     wait: yes
     group:
-      - "DEVSG"
-    vpc_subnet_id:  subnet-01644a9e52899002a
+      - "{{ SGNAME }}"
+    vpc_subnet_id:  "{{ SUBID }}"
     assign_public_ip: yes
